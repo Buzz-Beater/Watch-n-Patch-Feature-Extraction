@@ -1,4 +1,4 @@
-function [mean_skeletons] = getMeanSkeleton(skeletons, action_index)
+function [mean_skeletons, action2skeleton] = getMeanSkeleton(skeletons, action_index)
 	total_action = size(action_index, 2) + 1;
 	action2skeleton = {};
 	for action = 1 : total_action
@@ -8,12 +8,15 @@ function [mean_skeletons] = getMeanSkeleton(skeletons, action_index)
 	dir_cnt = size(skeletons, 1);
 	action_idx = ones(1, total_action);
 	for dir_idx = 1 : dir_cnt
-		frame_cnt = size(skeletons{dir_idx}, 1)
+		frame_cnt = size(skeletons{dir_idx}, 2);
 		for frame_idx = 1 : frame_cnt
-			skeleton = skeletons{dir_idx}{frame_idx}{1};
-			action = skeleton{3};
-			action2skeleton{action}{action_idx(action)} = skeleton{2};
-			action_idx(action) += 1;
+			skeleton = skeletons{dir_idx}{frame_idx};
+      if size(skeleton, 1) ~= 0
+        skeleton = skeleton{1};
+			  action = skeleton{3};
+			  action2skeleton{action}{action_idx(action)} = skeleton{2};
+			  action_idx(action) += 1;
+      end
 		end
 	end
 
@@ -35,5 +38,5 @@ function [mean_skeletons] = getMeanSkeleton(skeletons, action_index)
 			action2skeleton{action} = action2skeleton(2 : end);
 		end
 	end
-  action2anchor
+  mean_skeleton = 0;
 end
