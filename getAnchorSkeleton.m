@@ -1,13 +1,18 @@
-
-%%% problem ----- some fields of action2skeleton are {}(0 * 0)
-function [action2anchor, action2skeleton] = getMeanSkeleton(skeletons, action_index)
+%    getAnchorSkeleton
+%    Author:  Baoxiong Jia
+%    use: pass in the parameter as the return value from getSkeleton
+%            skeletons ---- the extracted skeleton meta, skeletons{dir_idx}{frame_idx} = skeleton_info
+%            action_index ---- merged action labels, for convenience of showing the actual string
+%    return: action2anchor ---- for each action, if there are labeled action skeletons, return the anchor point (3 * anchor_cnt)
+%            action2skeleton ---- for each action, access action2skeleton{action_idx}, we can have all skeleton labeled as action_index(action_idx)
+function [action2anchor, action2skeleton] = getAnchorSkeleton(skeletons, action_index)
 	total_action = size(action_index, 2) + 1;
 	action2skeleton = {};
 	for action = 1 : total_action
 		action2skeleton{action} = {};
 	end
 
-	dir_cnt = size(skeletons, 1);
+	dir_cnt = size(skeletons, 2);
 	action_idx = ones(1, total_action);
 	for dir_idx = 1 : dir_cnt
 		frame_cnt = size(skeletons{dir_idx}, 2);
@@ -23,22 +28,22 @@ function [action2anchor, action2skeleton] = getMeanSkeleton(skeletons, action_in
 	end
 
 	% currently take shoulder-left, shoulder-right, hip-left, hip-right as anchor points
+  % the skeleton's mean for each action's joint data is taken as anchor point
 	% we can take spine-base ---- 1 as base
 	anchor_index = [5, 9, 13, 17];
 	action2anchor = {};
 	for action = 1 : total_action
 		action2anchor{action} = [];
-		% choose the first skeleton of each action as anchors
-		if size(action2skeleton{action}, 2) > 0
-			anchor_skeleton = action2skeleton{action}{1};
-			for anchor_idx = 1 : size(anchor_index, 2)
-				% use camera coordinate or depth world coordinate, still needs to be determined
-				anchor_point = anchor_skeleton{anchor_index(anchor_idx)}.camera;
-				%anchor_point = anchor_skeleton.camera
-				action2anchor{action} = [action2anchor{action} anchor_point];
+		% choose the skeletons' mean of each action as anchors
+		if size(action2skeleton{action}, 2) > 0	
+			anchor_point = zeros(3, size(anchor_index, 2));
+			for skeleton_idx = 1 : size(action2skeleton{action}, 2)
+				anchor_skeleton = action2skeleton{action}{skeleton_idx};
+				anchor_tmp = getAnchor(anchor_skeleton, anchor_index);
+				anchor_point += anchor_tmp;
 			end
-			action2skeleton{action} = action2skeleton(2 : end);
+			anchor_point = anchor_point ./ size(action2skeleton{action}, 2);
+			action2anchor{action} = [action2anchor{action} anchor_point];
 		end
 	end
-  mean_skeleton = 0;
 end
