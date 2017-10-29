@@ -1,8 +1,8 @@
 function [action_index, skeleton_mats] = getSkeleton()
-	data_paths = {'./Dataset/office', './Dataset/kitchen1', './Dataset/kitchen2'};
-	class_paths = {'./Dataset/office_class', './Dataset/kitchen_class', './Dataset/kitchen_class'};
-	office_labels = load('./Dataset/office_classname.mat');
-	kitchen_labels = load('./Dataset/kitchen_classname.mat');
+	data_paths = {'../Dataset/office', '../Dataset/kitchen1', '../Dataset/kitchen2'};
+	class_paths = {'../Dataset/office_class', '../Dataset/kitchen_class', '../Dataset/kitchen_class'};
+	office_labels = load('../Dataset/office_classname.mat');
+	kitchen_labels = load('../Dataset/kitchen_classname.mat');
 	class_name = {office_labels, kitchen_labels, kitchen_labels};
   	action_index = [office_labels.office_classname, kitchen_labels.kitchen_classname];
 	office_dir = dir([data_paths{1}]);
