@@ -1,4 +1,6 @@
-function [mean_skeletons, action2skeleton] = getMeanSkeleton(skeletons, action_index)
+
+%%% problem ----- some fields of action2skeleton are {}(0 * 0)
+function [action2anchor, action2skeleton] = getMeanSkeleton(skeletons, action_index)
 	total_action = size(action_index, 2) + 1;
 	action2skeleton = {};
 	for action = 1 : total_action
