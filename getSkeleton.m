@@ -4,7 +4,7 @@ function [action_index, skeleton_mats] = getSkeleton()
 	office_labels = load('./Dataset/office_classname.mat');
 	kitchen_labels = load('./Dataset/kitchen_classname.mat');
 	class_name = {office_labels, kitchen_labels, kitchen_labels};
-  action_index = [office_labels.office_classname, kitchen_labels.kitchen_classname];
+  	action_index = [office_labels.office_classname, kitchen_labels.kitchen_classname];
 	office_dir = dir([data_paths{1}]);
 	office_dir = office_dir(3 : end);
 	kitchen_dir1 = dir([data_paths{2}]);
@@ -23,7 +23,7 @@ function [action_index, skeleton_mats] = getSkeleton()
 	idx = 1;  % from 1 to sum(dir_cnt)
 	for dir_name = 1 : 3 
 		for dir_idx = 1 : dir_cnt{dir_name}
-      fprintf('Reformating skeleton data for %s directory %d\n', data_paths{dir_name}, dir_idx);
+      			fprintf('Reformating skeleton data for %s directory %d\n', data_paths{dir_name}, dir_idx);
 			body = load(fullfile(data_paths{dir_name}, data_dirs{dir_name}(dir_idx).name, 'body.mat')).body;
 			action_labels = load(fullfile(class_paths{dir_name}, data_dirs{dir_name}(dir_idx).name, 'gnd.mat')).gnd;
 			frames = size(body, 1);
@@ -39,14 +39,14 @@ function [action_index, skeleton_mats] = getSkeleton()
 				if action_labels(frame, 1) == 0
 					action_label = size(action_index, 2) + 1;
 				else
-          if dir_name == 1
-            action_label = action_labels(frame, 1);
-					  %action_label = (class_name{dir_name}.office_classname){action_labels(frame, 1)};
-				  else
-            action_label = action_labels(frame, 1) + size(office_labels.office_classname, 2);
-            %action_label = (class_name{dir_name}.kitchen_classname){action_labels(frame, 1)};
-          end
-        end 
+          					if dir_name == 1
+            						action_label = action_labels(frame, 1);
+					  	%action_label = (class_name{dir_name}.office_classname){action_labels(frame, 1)};
+				  	else
+            						action_label = action_labels(frame, 1) + size(office_labels.office_classname, 2);
+            						%action_label = (class_name{dir_name}.kitchen_classname){action_labels(frame, 1)};
+          					end
+        				end 
 				for person = 1 : persons
 					cur_skeleton = body{frame, person};
 					if cur_skeleton.isBodyTracked ~= 0

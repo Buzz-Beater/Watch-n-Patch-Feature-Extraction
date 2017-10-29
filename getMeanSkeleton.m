@@ -5,7 +5,7 @@ function [mean_skeletons] = getMeanSkeleton(skeletons, action_index)
 		action2skeleton{action} = {};
 	end
 
-	dir_cnt = size(skeleton_mat, 1);
+	dir_cnt = size(skeletons, 1);
 	action_idx = ones(1, total_action);
 	for dir_idx = 1 : dir_cnt
 		frame_cnt = size(skeletons{dir_idx}, 1)
