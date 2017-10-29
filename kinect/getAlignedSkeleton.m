@@ -1,7 +1,7 @@
 %
-%	getALignedSkeleton
+%	getAlignedSkeleton
 %	Author: Baoxiong Jia
-%	use:	pass in the return value of getAligendSkeleton, which are anchor point for each action and skeleton set for each action
+%	use:	pass in the return value of getAnchorSkeleton, which are anchor points for each action and skeleton set for each action
 %	return:	return the aligned joints matrix (3 * 25) for each skeleton in each action
 %
 function [action2aligned] = getAlignedSkeleton(action2anchor, action2skeleton, dir_map)

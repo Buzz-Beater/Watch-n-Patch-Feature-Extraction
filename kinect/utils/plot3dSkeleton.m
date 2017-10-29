@@ -4,8 +4,14 @@ function plot3dSkeleton(skeletonData, plotColor, plotStyle, plotWidth)
         plotWidth = 3;
     end
 
-    index = [4, 21; 21, 1; 12, 9; 9, 21; 5, 21; 5, 8; 1, 18;... % Torso
-        1, 14; 18, 20; 14,19;];
+    index = [
+                24, 11; 24, 11; 11, 10; 10, 9; 9, 8; 8, 20;... % right arm
+                21, 7; 22, 7; 7, 6; 6, 5; 5, 4; 4, 20;... % left arm
+                3, 2; 2, 20;... % head
+                20, 1; 1, 0;... % torso
+                19, 14; 14, 17; 17, 16; 16, 0;... % right leg
+                15, 18; 18, 13; 13, 12; 12, 0;... % left leg
+            ];
     disp('plotting error alignement');
         %{
         ... % Left arm

@@ -1,3 +1,19 @@
+%
+%   getSkeleton
+%   Author: Baoxiong Jia
+%   use:    pass in the root directory of the dataset 
+%           (e.g. if ../Dataset/kitchen1 or ../Dataset/kitchen2 is your directory accordingly, 
+%           please set root to be '../Dataset')
+%   return: action_index -- for total 59 action labels, action_index(i)
+%                           will return the string indicating the i-th
+%                           action class label. (the first 43 indices relates to office_classnames
+%                           the last 16 relates to kitchen class names)
+%           skeleton_mats   the reformated skeleton data
+%                               - dir_index (the id of the folder, merged all office and kitchen data dirs then indexed)
+%                               - frame_index (the frame)
+%                                   - struct {person_id, raw_joint_data, action_label}
+%           dir_map         with dir_map{i} we can have the i-th directory name in the merged indexation
+%
 function [action_index, skeleton_mats, dir_map] = getSkeleton(root)
 	data_paths = {fullfile(root, 'office'), fullfile(root, 'kitchen1'), fullfile(root, 'kitchen2')};
 	class_paths = {fullfile(root, 'office_class'), fullfile(root, 'kitchen_class'), fullfile(root, 'kitchen_class')};

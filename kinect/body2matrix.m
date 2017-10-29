@@ -1,3 +1,9 @@
+%
+%   body2matrix
+%   Author: Baoxiong Jia
+%   use:    pass in the body struct in the Watch-n-Patch body.mat
+%   return: return (frames * joints * 3d) matrix
+%
 function [body_mat] = body2matrix(body)
     joint_cnt = 25;
     dimension = 3;

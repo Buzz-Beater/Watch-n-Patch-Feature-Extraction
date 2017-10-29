@@ -1,3 +1,4 @@
+%   Main logic stream of the get mean
 clc;
 clear;
 
