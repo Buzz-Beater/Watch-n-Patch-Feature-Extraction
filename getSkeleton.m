@@ -37,7 +37,7 @@ function [action_index, skeleton_mats] = getSkeleton()
 				skeleton_mats{idx}{frame} = {};
 				person_idx = 1;
 				if action_labels(frame, 1) == 0
-					action_label = size(action_idex, 2) + 1;
+					action_label = size(action_index, 2) + 1;
 				else
           if dir_name == 1
             action_label = action_labels(frame, 1);
