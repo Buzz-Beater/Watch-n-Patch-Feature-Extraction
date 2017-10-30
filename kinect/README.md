@@ -29,17 +29,17 @@
     - action2anchor (1 * action_label_num cell)
     - action2anchor{act} (3 * anchor_num matrix)
 
-- *getAnchor.m* : pass in the indices of anchor points and the raw skeleton data, return the anchor point matrix
-  - *anchor_point* 3 * anchor_num anchor point matrix
-  - *anchor_mask* mark if some of the anchor points are missing (currently deprecated)
+- **getAnchor.m** : pass in the indices of anchor points and the raw skeleton data, return the anchor point matrix
+  - **anchor_point** (3 * anchor_num) anchor point matrix
+  - **anchor_mask** mark if some of the anchor points are missing (currently deprecated)
 
-- *getAlignedSkeleton.m* : pass in *action2anchor*, *action2skeleton* and *dir_map*. For each action class, align all skeletons under this class according to anchor point coordinates
-  - *action2aligned* Map of action to aligned skeletons
+- **getAlignedSkeleton.m** : pass in **action2anchor**, **action2skeleton** and **dir_map**. For each action class, align all skeletons under this class according to anchor point coordinates
+  - **action2aligned** Map of action to aligned skeletons
     - action2aligned (1 * action_label_num cell)
     - action2aligned{act} (1 * skeleton_num cell)
     - action2aligned{act}{ske} (3 * 25 joints matrix)
   - if unable to align, will plot estimated coordinates in figure
-- *getMeanSkeleton.m* : return the mean skeleton for each action class.
-  - *action2mean* (1 * action_label_num cell), each element is (3 * 25) joint matrix
+- **getMeanSkeleton.m** : return the mean skeleton for each action class.
+  - **action2mean** (1 * action_label_num cell), each element is (3 * 25) joint matrix
 
 #### 2. Setup: clone or download the codes in /kinect directory
