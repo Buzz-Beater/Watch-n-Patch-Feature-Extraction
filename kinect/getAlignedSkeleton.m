@@ -6,7 +6,7 @@
 %
 function [action2aligned] = getAlignedSkeleton(action2anchor, action2skeleton, dir_map)
 	addpath(genpath('./utils'));
-	anchor_index = [5, 9, 13, 17];
+	anchor_index = [5, 9, 1];
 	action_cnt = size(action2anchor, 2);
 	action2aligned = {};
 	for action_idx = 1 : action_cnt

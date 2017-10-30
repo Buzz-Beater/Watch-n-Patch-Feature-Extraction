@@ -30,7 +30,7 @@ function [action2anchor, action2skeleton] = getnchorSkeleton(skeletons, action_i
 	% currently take shoulder-left, shoulder-right, hip-left, hip-right as anchor points
     % the skeleton's mean for each action's joint data is taken as anchor point
 	% we can take spine-base ---- 1 as base
-	anchor_index = [5, 9, 13, 17];
+	anchor_index = [5, 9, 1];
 	action2anchor = {};
 	for action = 1 : total_action
 		%anchor_cnt = zeros(1, size(anchor_index, 2));
