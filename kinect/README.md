@@ -6,12 +6,12 @@
 
 - **getAlignedSkeletonsWNP.m** :
 
-  the main process logic script, please modify the 'root' variable in this file to the root directory of your dataset (e.g. If your office data is in '/a/b/c/office', then change root to 'root' to be '/a/b/c'), for the variables generated, please check the return value discussed below.
+  the main process logic script, please modify the 'root' variable in this file to the root directory of your dataset (e.g. If your office data is in '/a/b/c/office', then change root to 'root' to be '/a/b/c'), for the variables generated, please check the return value discussed below. The final mean skeleton in each class is saved in **action2mean**.
 
 - **getSkeleton.m** :
 
   pass in the root directory (please make sure the directory for the datasets are not modified, i.e. kitchen1 and kitchen2 are separated), and return **action_index** and **skeleton_mat**
-  - **action_index** (1 * 59) : the merged index2string list of office class label and kitchen class label, first 43 strings are for office class, the rest are for kitchen class. Returned from <font color=#ff0000>**getSkeleton**</font>.
+  - **action_index** (1 * 59) : the merged index2string list of office class label and kitchen class label, first 43 strings are for office class, the rest are for kitchen class. Returned from **getSkeleton**.
   - **skeleton_mat** : the reformated skeleton cell array. Returned from **getSkeleton**, it's structure is as follows
 
     - skeleton_mat          (1 * dir_num cell)
