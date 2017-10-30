@@ -9,8 +9,8 @@ function plot3dSkeleton(skeletonData, plotColor, plotStyle, plotWidth)
                 21, 7; 22, 7; 7, 6; 6, 5; 5, 4; 4, 20;... % left arm
                 3, 2; 2, 20;... % head
                 20, 1; 1, 0;... % torso
-                19, 14; 14, 17; 17, 16; 16, 0;... % right leg
-                15, 18; 18, 13; 13, 12; 12, 0;... % left leg
+                19, 18; 18, 17; 17, 16; 16, 0;... % right leg
+                15, 14; 14, 13; 13, 12; 12, 0;... % left leg
             ] + 1;
         %{
         ... % Left arm

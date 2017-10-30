@@ -22,5 +22,6 @@ for action = 1 : size(action2mean, 2)
         plot_skeleton(action2mean{action}', action2skeleton{action}{1}{3}, action2skeleton{action}{1}{2}, dir_map, 'r')
         hold on;
         plot_skeleton(action2aligned{action}{1}', action2skeleton{action}{1}{3}, action2skeleton{action}{1}{2}, dir_map, 'g');
+        title(action_index{action});
     end
 end
