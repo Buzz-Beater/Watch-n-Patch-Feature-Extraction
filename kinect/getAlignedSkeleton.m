@@ -38,10 +38,3 @@ function [action2aligned] = getAlignedSkeleton(action2anchor, action2skeleton, d
 		end
 	end
 end
-
-function [joints] = getJoints(skeleton)
-	joints = [];
-	for joint_idx = 1 : 25
-		joints = [joints, skeleton{joint_idx}.camera];
-	end
-end

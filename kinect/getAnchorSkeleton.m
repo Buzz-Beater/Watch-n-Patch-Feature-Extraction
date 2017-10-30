@@ -38,6 +38,7 @@ function [action2anchor, action2skeleton] = getnchorSkeleton(skeletons, action_i
 		% choose the skeletons' mean of each action as anchors
 		if size(action2skeleton{action}, 2) > 0	
 			anchor_point = zeros(3, size(anchor_index, 2));
+            %{
 			for skeleton_idx = 1 : size(action2skeleton{action}, 2)
 				anchor_skeleton = action2skeleton{action}{skeleton_idx}{1};
 				%{
@@ -51,7 +52,9 @@ function [action2anchor, action2skeleton] = getnchorSkeleton(skeletons, action_i
 			end
 			%anchor_point = anchor_point ./ anchor_cnt;
             anchor_point = anchor_point ./ size(action2skeleton{action}, 2);
-			action2anchor{action} = [action2anchor{action} anchor_point];
+			%}
+            [anchor_point, ~] = getAnchor(action2skeleton{action}{1}{1}, anchor_index);
+            action2anchor{action} = [action2anchor{action} anchor_point];
 		end
 	end
 end
