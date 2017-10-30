@@ -11,6 +11,7 @@ root = '../Dataset';
 
 %%
 action2aligned = getAlignedSkeleton(action2anchor, action2skeleton, dir_map);
+save('action2aligned.mat', 'action2aligned');
 
 %% 
 action2mean = getMeanSkeleton(action2aligned);

@@ -11,7 +11,7 @@ function plot3dSkeleton(skeletonData, plotColor, plotStyle, plotWidth)
                 20, 1; 1, 0;... % torso
                 19, 14; 14, 17; 17, 16; 16, 0;... % right leg
                 15, 18; 18, 13; 13, 12; 12, 0;... % left leg
-            ];
+            ] + 1;
     disp('plotting error alignement');
         %{
         ... % Left arm
