@@ -20,8 +20,8 @@ function points3d = depth_plane2depth_world(imgDepthAbs)
 
   [xx,yy] = meshgrid(1:W, 1:H);
   
-  X = (xx - cx_d) .* imgDepthAbs / fx_d;
-  Y = (yy - cy_d) .* imgDepthAbs / fy_d;
+  X = - (xx - cx_d) .* imgDepthAbs / fx_d;
+  Y = - (yy - cy_d) .* imgDepthAbs / fy_d;
   Z = imgDepthAbs;
   
   points3d = [X(:) Y(:) Z(:)];
