@@ -1,0 +1,7 @@
+%   
+%   Function:   getBody
+%   Author:     Baoxiong Jia
+%   Usage:      pass in the directory name then return the 
+function [body] = getBody(file_path)
+    
+end

@@ -9,7 +9,7 @@ root = '../Dataset';
 
 [action2anchor, action2skeleton] = getAnchorSkeleton(skeleton_mat, action_index);
 
-
+%%
 action2aligned = getAlignedSkeleton(action2anchor, action2skeleton, dir_map);
 save('action2aligned.mat', 'action2aligned');
 
@@ -22,7 +22,7 @@ action2mean = getMeanSkeletons(action2aligned);
 
 action_index{60} = 'null';
 
-%%
+cl%%
 for action = 1 : size(action2mean, 2)
     if size(action2aligned{action}, 2) ~= 0
         fig = figure();
@@ -32,5 +32,6 @@ for action = 1 : size(action2mean, 2)
         if action ~= size(action2mean, 2)
             title(action_index{action});
         end
+    
     end
 end
