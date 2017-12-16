@@ -1,4 +1,5 @@
-%
+
+
 %   getSkeleton
 %   Author: Baoxiong Jia
 %   use:    pass in the root directory of the dataset 
