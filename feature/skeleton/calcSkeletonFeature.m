@@ -8,6 +8,7 @@ function [features] = calcSkeletonFeature(file_path)
     features = compute_feature(body_mat);
 end
 
+% Uniform interface for skeleton feature computation
 function [features] = compute_feature(body_mat)
     angle_features = calc_angle(body_mat);
     motion_features = calc_motion(body_mat);
@@ -15,13 +16,16 @@ function [features] = compute_feature(body_mat)
     features = [angle_features, motion_features, offset_features];
 end
 
+% Angle between torso, limbs and related body parts
 function [angle_features] = calc_angle(body_mat)
     connected_parts = [[24, 11, 10]; [23, 11, 10]; [11, 10, 9]; [10, 9, 8]; [9, 8, 20]; ... % right arm
     					[5, 4, 20]; [6, 5, 4]; [7, 6, 5]; [21, 7, 6]; [22, 7, 6]; ... % left arm
     					[3, 2, 20]; [2, 20, 1]; [20, 1, 0]; ... % torso
     					[1, 0, 16]; [0, 16, 17]; [16, 17, 18]; [17, 18, 19]; ... % right leg
     					[1, 0, 12]; [0, 12, 13]; [12, 13, 14]; [13, 14, 15]]; % left leg
-   	connected_parts = connected_parts + 1;
+   	% Transform kinect index to matlab index
+	connected_parts = connected_parts + 1;
+	% Return frame * angle_number feature
    	angle_features = zeros(size(body_mat, 1), size(connected_parts, 1));
    	for frame = 1 : size(body_mat, 1)
    		for set_idx = 1 : size(connected_parts, 1)
@@ -33,6 +37,7 @@ function [angle_features] = calc_angle(body_mat)
    	end
 end
 
+% Motion for body joints, measured by the spatial location difference between frame t and frame t-1
 function [motion_features] = calc_motion(body_mat, angle_features)
 	motion_features = zeros(size(body_mat, 1), size(body_mat, 2) + size(angle_features, 2));
 	motion_features(1, :) = ones(1, size(body_mat, 2) + size(angle_features, 2));
@@ -43,6 +48,7 @@ function [motion_features] = calc_motion(body_mat, angle_features)
 	end
 end
 
+% Offset for body joints, measured by the spatial location difference between frame t and frame 1
 function [offset_features] = calc_offset(body_mat, angle_features)
 	offset_features = zeros(size(body_mat, 1), size(body_mat, 2) + size(angle_features, 2))
 	offset_features(1, :) = ones(1, size(body_mat, 2) + size(angle_features, 2));
