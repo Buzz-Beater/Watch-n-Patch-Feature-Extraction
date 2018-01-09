@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="MexTest">
+</Property><Property Name="ソリューション ファイル" Value="C:\Users\hideshi\Documents\Visual Studio 2010\Projects\MexTest\MexTest.sln">
+</Property><Property Name="Date" Value="2012年10月19日">
+</Property><Property Name="Time" Value="16:43">
+</Property></Properties><Event ErrorLevel="0" Project="MexTest" Source="MexTest\MexTest.vcproj" Description="Converting project file 'C:\Users\hideshi\Documents\Visual Studio 2010\Projects\MexTest\MexTest\MexTest.vcproj'.">
+</Event><Event ErrorLevel="1" Project="MexTest" Source="MexTest\MexTest.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="MexTest" Source="MexTest\MexTest.vcproj" Description="Done converting to new project file 'C:\Users\hideshi\Documents\Visual Studio 2010\Projects\MexTest\MexTest\MexTest.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="MexTest" Source="MexTest\MexTest.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="MexTest.sln" Description="ソリューションは正常に変換されました">
+</Event><Event ErrorLevel="3" Project="" Source="MexTest.sln" Description="Converted">
+</Event></UpgradeLog>

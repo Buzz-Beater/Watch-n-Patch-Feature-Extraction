@@ -1,4 +1,4 @@
-%   getSkeleton
+%   getSkeletonFeature
 %   Author: Baoxiong Jia
 %   use:    pass in the root directory of the dataset 
 %           (e.g. if ../Dataset/kitchen1 or ../Dataset/kitchen2 is your directory accordingly, 

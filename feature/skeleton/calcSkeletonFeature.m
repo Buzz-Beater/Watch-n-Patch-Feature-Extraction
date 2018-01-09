@@ -1,18 +1,19 @@
 %   
 %   Function:   getBody
 %   Author:     Baoxiong Jia
-%   Usage:      pass in the directory name then return the 
+%   Usage:      pass in the directory name then return the skeleton
+%   features
 function [features] = calcSkeletonFeature(file_path)
     body = load(file_path);
-    body_mat = body.body;
+    body_mat = body2matrix(body.body);
     features = compute_feature(body_mat);
 end
 
 % Uniform interface for skeleton feature computation
 function [features] = compute_feature(body_mat)
     angle_features = calc_angle(body_mat);
-    motion_features = calc_motion(body_mat);
-    offset_features = calc_offset(body_mat);
+    motion_features = calc_motion(body_mat, angle_features);
+    offset_features = calc_offset(body_mat, angle_features);
     features = [angle_features, motion_features, offset_features];
 end
 
@@ -30,8 +31,8 @@ function [angle_features] = calc_angle(body_mat)
    	for frame = 1 : size(body_mat, 1)
    		for set_idx = 1 : size(connected_parts, 1)
    			points = body_mat(frame, connected_parts(set_idx, :), :);
-   			x_1 = points(2, :) - points(1, :);
-   			x_2 = points(2, :) - points(3, :);
+   			x_1 = squeeze(points(1, 2, :) - points(1, 1, :));
+   			x_2 = squeeze(points(1, 2, :) - points(1, 3, :));
    			angle_features(frame, set_idx) = dot(x_1, x_2) / (norm(x_1) * norm(x_2));
    		end
    	end
@@ -42,19 +43,23 @@ function [motion_features] = calc_motion(body_mat, angle_features)
 	motion_features = zeros(size(body_mat, 1), size(body_mat, 2) + size(angle_features, 2));
 	motion_features(1, :) = ones(1, size(body_mat, 2) + size(angle_features, 2));
 	for frame = 2 : size(body_mat, 1)
-		motion_distance = sqrt(sum((body_mat(frame, :, :) - body_mat(frame - 1, :, :)) .^ 2, 2));
-		angle_distance = sqrt(angle_features(frame, :) - angle_features(frame - 1) .^ 2);
-		motion_features(frame, :) = [motion_distance', angle_distance];
+        prev_skeleton = squeeze(body_mat(frame - 1, :, :))';
+        cur_skeleton = squeeze(body_mat(frame, :, :))';
+        motion_distance = sqrt(sum((cur_skeleton - prev_skeleton) .^ 2));
+		angle_distance = sqrt((angle_features(frame, :) - angle_features(frame - 1, :)) .^ 2);
+		motion_features(frame, :) = [motion_distance, angle_distance];
 	end
 end
 
 % Offset for body joints, measured by the spatial location difference between frame t and frame 1
 function [offset_features] = calc_offset(body_mat, angle_features)
-	offset_features = zeros(size(body_mat, 1), size(body_mat, 2) + size(angle_features, 2))
+	offset_features = zeros(size(body_mat, 1), size(body_mat, 2) + size(angle_features, 2));
 	offset_features(1, :) = ones(1, size(body_mat, 2) + size(angle_features, 2));
 	for frame = 2 : size(body_mat, 1)
-		offset_motion = sqrt(sum((body_mat(frame, :, :) - body_mat(1, :, :)), 2));
-		offset_angle = sqrt(angle_features(frame, :) - angle_features(1, :));
-		offset_features(frame, :) = [offset_motion', offset_angle];
+        init_skeleton = squeeze(body_mat(1, :, :))';
+        cur_skeleton = squeeze(body_mat(frame, :, :))';
+		offset_motion = sqrt(sum((cur_skeleton - init_skeleton) .^ 2));
+		offset_angle = sqrt((angle_features(frame, :) - angle_features(1, :)) .^ 2);
+		offset_features(frame, :) = [offset_motion, offset_angle];
 	end
 end

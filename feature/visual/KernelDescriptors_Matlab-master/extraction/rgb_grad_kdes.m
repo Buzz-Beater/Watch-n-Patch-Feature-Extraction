@@ -1,6 +1,7 @@
 function [] = rgb_grad_kdes(data_path)
     addpath('../helpfun');
     addpath('../kdes');
+    addpath('../CVonMatlabFunc');
     
     img_subdir = dir_bo(data_path);
 	img_path = cell(length(img_subdir), 1);
