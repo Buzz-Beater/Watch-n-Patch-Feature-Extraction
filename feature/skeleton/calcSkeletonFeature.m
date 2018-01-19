@@ -4,7 +4,7 @@
 %   Usage:      pass in the directory name then return the skeleton
 %   features
 function [features] = calcSkeletonFeature(file_path)
-    body = load(file_path);
+    body = load(fullfile(file_path, 'body.mat'));
     body_mat = body2matrix(body.body);
     features = compute_feature(body_mat);
 end

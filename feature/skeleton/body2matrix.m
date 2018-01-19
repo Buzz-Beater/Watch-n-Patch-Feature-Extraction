@@ -18,7 +18,7 @@ function [body_mat] = body2matrix(body)
             if cur_skeleton.isBodyTracked ~= 0
                 track_flag = 1;
                 if has_morethan1
-                    fprintf('has more than 1 person in %d frame', frame_idx);
+                    fprintf('    has more than 1 person in %d frame\n', frame_idx);
                 end
                 has_morethan1 = true;
                 joints = cur_skeleton.joints;
