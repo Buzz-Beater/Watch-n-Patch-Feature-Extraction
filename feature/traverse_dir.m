@@ -28,22 +28,22 @@ function [] = traverse_dir(root, fea_type)
 	dir_cnt = {size(office_dir, 1), size(kitchen_dir1, 1), size(kitchen_dir2, 1)};
 	dir_total = size(office_dir, 1) + size(kitchen_dir1, 1) + size(kitchen_dir2, 1);
 
-	for dir_class = 1 : 3 
-		for dir_idx = 1 : dir_cnt{dir_class}
+	for dir_class = 3 : 3
+		parfor dir_idx = 1 : dir_cnt{dir_class}
    			dir_name = data_dirs{dir_class}(dir_idx).name;
 			file_path = fullfile(data_paths{dir_class}, dir_name);
 			save_path = fullfile(root, 'features', fea_type, class_names{dir_class}, dir_name);
-			if ~exist(save_path)
-				mkdir(save_path);
-            end
+			%if ~exist(save_path)
+			%	mkdir(save_path);
+            %end
+            mkdir(save_path);
             tic;
-			if fea_type == 'skeleton'
-				skeleton_features = calcSkeletonFeature(file_path);
-				save(fullfile(save_path, 'skeleton_features.mat'), 'skeleton_features');
-			elseif fea_type == 'foreground'
-				%foreground_mask = calcForegroundMask(fullfile(file_path, 'rgbjpg'));
-			elseif fea_type == 'superpixel'
-				%sp_segmentation = calcSuperpixelSegmentation(fullfile(file_path, 'rgbjpg'));
+			if strcmp(fea_type, 'skeleton')
+				extractSkeletonFeature(file_path, save_path);
+			elseif strcmp(fea_type, 'foreground')
+                extractForegroundMask(fullfile(file_path, 'rgbjpg'), save_path);
+			elseif strcmp(fea_type, 'superpixel')
+				extractSuperpixel(fullfile(file_path, 'rgbjpg'), save_path);
             end
             stop = toc;
             fprintf('extracting %s for %s, took %fs\n', fea_type, file_path, stop);

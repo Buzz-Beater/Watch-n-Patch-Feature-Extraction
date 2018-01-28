@@ -81,7 +81,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
   temp1 = (mwSize*)mxGetDimensions(prhs[0]); 
   ns[0] = temp1[0]; ns[1] = temp1[1]; ns[2] = temp1[2];
   nCh=(nDims==2) ? 1 : ns[2];
-  mexPrintf("input dimension is %d %d %d\n", ns[0], ns[1], ns[2]);
   if( (nDims!=2 && nDims!=3) ||
     (id!=mxSINGLE_CLASS && id!=mxDOUBLE_CLASS && id!=mxUINT8_CLASS) )
     mexErrMsgTxt("A should be 2D or 3D single, double or uint8 array.");
@@ -111,7 +110,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
   if( ms[0]<0 || ns[0]<=-pt || ns[0]<=-pb ) ms[0]=0;
   if( ms[1]<0 || ns[1]<=-pl || ns[1]<=-pr ) ms[1]=0;
   temp[0] = ms[0]; temp[1] = ms[1]; temp[2] = ms[2];
-  mexPrintf("Creating array %lld, %lld, %lld\n", temp[0], temp[1], temp[2]);
   plhs[0] = mxCreateNumericArray(3, (const mwSize*) temp, id, mxREAL);
   if( ms[0]==0 || ms[1]==0 ) return;
 
