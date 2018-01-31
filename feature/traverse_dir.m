@@ -50,7 +50,8 @@ function [] = traverse_dir(root, fea_type)
             elseif strcmp(fea_type, 'select_sp')
             	% Here code is specific designed for rgb
             	% For depth images, use 'depth' in body2matrix_mod and 'depth' in sp_path
-                save_rt = fullfile(root, 'features', 'merge', file_path);
+                save_rt = fullfile(root, 'features', 'merge', rel_path);
+                mkdir(save_rt);
             	imgs = dir([fullfile(file_path, 'rgbjpg')]);
             	img_path = imgs(3 : end);
             	body = load(fullfile(file_path, 'body.mat'));
@@ -90,7 +91,11 @@ function [] = traverse_dir(root, fea_type)
                                 seg = bwlabel(ucm <= 0.13);
                             end
                             foreground = imresize(foreground, size(seg));
-                            [selected] = select_sp(seg, foreground, skeleton);
+                            skeleton_ = reshape(skeleton(idx, :, :), [size(skeleton(idx, :, :), 2), size(skeleton(idx, :, :), 3)]);
+                            if field == 'color'
+                                skeleton_ = skeleton_ ./ 2;
+                            end
+                            [selected] = select_sp(seg, foreground, skeleton_);
                             feature = merge_sp(segfea, seg, selected, kernels{k_idx});
                             concat_feature = [concat_feature, feature];
                         end

@@ -15,7 +15,7 @@ function [feature] = merge_sp(segfea, seg, selected, kernel)
 		feature = segfea(selected, :);
 	else
 		for t = 1 : length(selected)
-			feature = feature + wseg(selected) * segfea(selected, :);
+			feature = feature + wseg(selected)'* segfea(:, selected)';
 		end
 		feature = feature / wseg2;
 	end
