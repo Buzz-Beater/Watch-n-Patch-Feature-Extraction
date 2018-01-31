@@ -18,6 +18,10 @@ end
 % spatial pyramid match with the learned low dimensional kernel
     xgrid = ceil(feaSet.x);
     ygrid = ceil(feaSet.y);
+    index = find(ygrid > size(seg, 1));
+    ygrid(index) = size(seg, 1);
+    index = find(xgrid > size(seg, 2));
+    xgrid(index) = size(seg, 2);
     allgrid = sub2ind( size(seg), ygrid, xgrid );
 
     for s=0:nseg-1,

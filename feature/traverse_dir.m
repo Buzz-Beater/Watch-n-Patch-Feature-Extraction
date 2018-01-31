@@ -28,11 +28,12 @@ function [] = traverse_dir(root, fea_type)
 	dir_cnt = {size(office_dir, 1), size(kitchen_dir1, 1), size(kitchen_dir2, 1)};
 	dir_total = size(office_dir, 1) + size(kitchen_dir1, 1) + size(kitchen_dir2, 1);
 
-	for dir_class = 3 : 3
-		parfor dir_idx = 1 : dir_cnt{dir_class}
+	for dir_class = 1 : 3
+		for dir_idx = 1 : dir_cnt{dir_class}
    			dir_name = data_dirs{dir_class}(dir_idx).name;
 			file_path = fullfile(data_paths{dir_class}, dir_name);
-			save_path = fullfile(root, 'features', fea_type, class_names{dir_class}, dir_name);
+            rel_path = fullfile(class_names{dir_class}, dir_name);
+			save_path = fullfile(root, 'features_temp', fea_type, class_names{dir_class}, dir_name);
 			%if ~exist(save_path)
 			%	mkdir(save_path);
             %end
@@ -41,10 +42,61 @@ function [] = traverse_dir(root, fea_type)
 			if strcmp(fea_type, 'skeleton')
 				extractSkeletonFeature(file_path, save_path);
 			elseif strcmp(fea_type, 'foreground')
-                extractForegroundMask(fullfile(file_path, 'rgbjpg'), save_path);
+                %extractForegroundMask(fullfile(file_path, 'rgbjpg'), save_path, 'rgbjpg');
+                extractForegroundMask(fullfile(file_path, 'depth'), save_path, img_type);
 			elseif strcmp(fea_type, 'superpixel')
-				extractSuperpixel(fullfile(file_path, 'rgbjpg'), save_path);
-            end
+				extractSuperpixel(fullfile(file_path, 'rgbjpg'), save_path, img_type);
+                %extractSuperpixel(fullfile(file_path, 'depth'), save_path, 'depth');
+            elseif strcmp(fea_type, 'select_sp')
+            	% Here code is specific designed for rgb
+            	% For depth images, use 'depth' in body2matrix_mod and 'depth' in sp_path
+                save_rt = fullfile(root, 'features', 'merge', file_path);
+            	imgs = dir([fullfile(file_path, 'rgbjpg')]);
+            	img_path = imgs(3 : end);
+            	body = load(fullfile(file_path, 'body.mat'));
+            	body = body.body;
+                for idx = 1 : length(img_path)
+                   img_types = {'rgbjpg', 'depth'};
+                   skeleton_fea_file = load(fullfile(root, 'features', 'skeleton', rel_path, 'skeleton_features.mat'));
+                   skeleton_fea = skeleton_fea_file.features;
+
+                   concat_feature = skeleton_fea(idx, :);
+                    
+                   for type_idx = 1 : length(img_types)
+                        img_type = img_types{type_idx};
+                        if strcmp(img_type, 'rgbjpg')
+                            field = 'color';
+                            %kernels = {'nrgbkdes', 'gradkdes', 'lbpkdes'};
+                            kernels = {'nrgbkdes'};
+                        else
+                            field = 'depth';
+                            %kernels = {'gradkdes_dep', 'normalkdes'};
+                            kernels = {'gradkdes_dep'};
+                        end
+                        skeleton = body2matrix_mod(body, field);
+                        for k_idx = 1 : length(kernels)
+                            segfea_path = fullfile(root, 'features', 'kdes', kernels{k_idx}, rel_path, [num2str(idx, '%04d') '.mat']);
+                            segfea_file = load(segfea_path);
+                            segfea = segfea_file.kdes;	
+                            foreground_path = fullfile(root, 'features', 'foreground', 'rgbjpg', rel_path, [num2str(idx, '%04d') '.mat']);
+                            sp_path = fullfile(root, 'features', 'superpixel', img_type, rel_path, [num2str(idx, '%04d') '.mat']);
+                            mask_file = load(foreground_path);
+                            sp_file = load(sp_path);
+                            foreground = mask_file.Tmask;
+                            if strcmp(img_type, 'rgbjpg')
+                              seg = sp_file.seg;
+                            else
+                                ucm = sp_file.U;
+                                seg = bwlabel(ucm <= 0.13);
+                            end
+                            foreground = imresize(foreground, size(seg));
+                            [selected] = select_sp(seg, foreground, skeleton);
+                            feature = merge_sp(segfea, seg, selected, kernels{k_idx});
+                            concat_feature = [concat_feature, feature];
+                        end
+                    end
+                    save_concat_features([save_rt '/' num2str(idx, '%04d') '.mat'], concat_feature);
+                end
             stop = toc;
             fprintf('extracting %s for %s, took %fs\n', fea_type, file_path, stop);
 		end

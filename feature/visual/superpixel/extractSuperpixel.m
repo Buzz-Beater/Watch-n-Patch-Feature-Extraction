@@ -1,5 +1,10 @@
-function [] = extractSuperpixel(file_path, save_path)
-    model=load('models/forest/modelBsds'); model=model.model;
+function [] = extractSuperpixel(file_path, save_path, type)
+    if strcmp(type, 'rgb')
+        model=load('models/forest/modelBsds');
+    else
+        model=load('models/forest/modelNyuD');
+    end
+    model=model.model;
     model.opts.nms=-1; model.opts.nThreads=4;
     model.opts.multiscale=0; model.opts.sharpen=2;
     % opts for spDetect (see spDetect.m)
@@ -12,18 +17,26 @@ function [] = extractSuperpixel(file_path, save_path)
 
     % detect and display superpixels (see spDetect.m)
     folder_path = strcat(file_path, '/');
-    frames_rgb = dir(strcat(folder_path, '*.jpg'));
-    nframes = size(frames_rgb, 1);
-    factor = 0.8;
+    if strcmp(type, 'rgb')
+        frames = dir(strcat(folder_path, '*.jpg'));
+    else
+        frames = dir(strcat(folder_path, '*.mat'));
+    end
+    nframes = size(frames, 1);
     for i = 1 : nframes
-        I = imread(strcat(folder_path, frames_rgb(i).name));
+        if strcmp(type, 'rgb')
+            I = imread(strcat(folder_path, frames(i).name));
+        else
+            depth = load(strcat(folder_path, frames(i).name));
+            I = depth.depth;
+        end
         %I = imresize(I, 0.8);
         [E,~,~,segs]=edgesDetect(I,model);
-        [S,V] = spDetect(I,E,opts);
+        [S,~] = spDetect(I,E,opts);
         % compute ultrametric contour map from superpixels (see spAffinities.m)
         [~,~,U]=spAffinities(S,E,segs,opts.nThreads);
         %figure(3); 
-        %U = imresize(U, 1/0.8);
+        U = imresize(U, 0.5);
         %im(U);
         save(fullfile(save_path, sprintf('%04d', i)), 'U');
     end

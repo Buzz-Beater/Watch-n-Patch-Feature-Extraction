@@ -8,6 +8,6 @@ rt_dir = '/home/baoxiong/Projects/WNP-Preprocess/Dataset';
 im_rt_dir = {'office', 'kitchen1', 'kitchen2'};
 im_class = {'office', 'kitchen'};
 
-params.samplenum = 1000;
-params.num_iter = 10;
+params.samplenum = 100;
+params.num_iter = 1000;
 params.wordnum = 400;

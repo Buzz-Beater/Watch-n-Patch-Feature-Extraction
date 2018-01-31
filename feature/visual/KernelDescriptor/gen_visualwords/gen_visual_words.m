@@ -13,12 +13,12 @@ function [] = gen_visual_words(kdes_type)
         basis_params.num_iter = params.num_iter;
     
         kdes_path = get_kdes_path(fullfile(rt_dir, 'kdes', kdes_type, scene_type));
-    
+        
         fea_params.feapath = kdes_path;
         fea_params.scene_type = scene_type;
         rgbdwords = visualwords(fea_params, basis_params);
     
-        save_dir = ['../seg_kernel/visual_words/' kdes_type '_' scene_type '_' num2str(basis_params.wordnum) '.mat'];
+        save_dir = ['../seg_kernel/visual_words/' kdes_type '_' scene_type '_' num2str(basis_params.samplenum) '.mat'];
         save(save_dir, 'rgbdwords');
     end
 end

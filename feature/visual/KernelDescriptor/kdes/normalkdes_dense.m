@@ -99,8 +99,8 @@ normalkdes_arr = normalkdes_params.kdes.eigvectors*mwkvs(:,1:it);
 
 % output normal kernel descriptors
 feaSet.feaArr{1} = normalkdes_arr;
-feaSet.x = grid_x(keep) + mpatchsize_half - 0.5;
-feaSet.y = grid_y(keep) + mpatchsize_half - 0.5;
+feaSet.x = (grid_x(keep) + mpatchsize_half - 0.5);
+feaSet.y = (grid_y(keep) + mpatchsize_half - 0.5);
 feaSet.width = cloud_w;
 feaSet.height = cloud_h;
 

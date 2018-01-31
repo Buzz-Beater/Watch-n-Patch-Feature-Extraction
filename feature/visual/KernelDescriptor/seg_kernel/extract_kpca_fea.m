@@ -6,7 +6,7 @@ function [] = extract_kpca_fea(kdes_type)
 
     run config.m;
     
-    if contains(kdes_type, 'dep')
+    if contains(kdes_type, 'dep') || contains(kdes_type, 'normal') || contains(kdes_type, 'spin')
         params.type = 'depth';
     else
         params.type = 'rgbjpg';
@@ -31,6 +31,9 @@ function [] = extract_kpca_fea(kdes_type)
             % initialize the parameters of kdes
             kdes_params.grid = params.grid;   % kdes is extracted every 8 pixels
             kdes_params.patchsize = params.patchsize;  % patch size
+            if contains(kdes_type, 'normal') || contains(kdes_type, 'spin')
+                kdes_params.patchsize = 40;
+            end
             kdes_params.kdes = meta_words.params;
 
             % extract kernel descriptors

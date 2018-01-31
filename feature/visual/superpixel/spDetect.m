@@ -43,7 +43,7 @@ function [S,V] = spDetect( I, E, varargin )
 % Licensed under the MSR-LA Full Rights License [see license.txt]
 
 % get default parameters
-dfs = { 'type','sticky', 'nIter',4, 'nThreads',4, 'k',512, ...
+dfs = { 'type','w', 'nIter',4, 'nThreads',4, 'k',512, ...
   'alpha',.5, 'beta',.9, 'merge',0, 'bounds',1, 'seed',[] };
 o = getPrmDflt(varargin,dfs,1); if(nargin==0), S=o; return; end
 type=lower(o.type(1)); assert( type=='w' || type=='s' );
@@ -51,7 +51,7 @@ sigs = [ o.k*o.alpha/1e4 o.alpha/1e4 ...
   (1-o.alpha)*o.beta (1-o.alpha)*(1-o.beta) ];
 
 % check dimensions and type of image and edge map
-[h,w,~]=size(I); assert(isa(I,'uint8') && size(I,3)==3);
+[h,w,~]=size(I); %assert(isa(I,'uint8') && size(I,3)==3);
 if(nargin<2 || isempty(E)), E=zeros(h,w,'single'); end
 assert(isa(E,'single') && size(E,1)==h && size(E,2)==w);
 I=rgbConvert(I,'rgb');
@@ -91,8 +91,8 @@ if(o.bounds~=b), S = spDetectMex('boundaries',S,E,o.bounds,o.nThreads); end
 
 % optionally merge superpixels
 if(o.merge>0 && o.bounds), S = spDetectMex('merge',S,E,o.merge); end
-
+V = {};
 % optionally create visualization
-if(nargout>=2), V=spDetectMex('visualize',S,I,o.bounds); end
+% if(nargout>=2), V=spDetectMex('visualize',S,I,o.bounds); end
 
 end

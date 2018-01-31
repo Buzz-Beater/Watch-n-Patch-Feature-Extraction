@@ -1,5 +1,5 @@
 function [I, seg] = load_unit(rt_dir, rel_dir, img_idx, params)
-    sp_path = fullfile(rt_dir, 'features', 'superpixel', rel_dir, [num2str(img_idx, '%04d') '.mat']);
+    sp_path = fullfile(rt_dir, 'features', 'superpixel', params.type, rel_dir, [num2str(img_idx, '%04d') '.mat']);
     switch params.type
         case 'rgbjpg'
             img_path = fullfile(rt_dir, rel_dir, params.type, [num2str(img_idx, '%04d') '.jpg']);
@@ -7,16 +7,17 @@ function [I, seg] = load_unit(rt_dir, rel_dir, img_idx, params)
             if max(size(I)) > params.max_size
                 I = imresize(I, params.max_size / max(size(I)), 'bicubic');
             end
+            file = load(sp_path);
+            seg = file.seg;
         otherwise
             img_path = fullfile(rt_dir, rel_dir, params.type, [num2str(img_idx, '%04d') '.mat']);
             I = load(img_path);
-            depth = I.depth;
-            I = double(depth) / 1000;
+            I = I.depth;
+            ucm = load(sp_path);
+            U = ucm.U;
+            if max(size(U)) > params.max_size
+                U = imresize(U, params.max_size / max(size(U)), 'bicubic');
+            end
+            seg = bwlabel(U <= params.dep_threshold);
     end
-    ucm = load(sp_path);
-    U = ucm.U;
-    if max(size(U)) > params.max_size
-        U = imresize(U, params.max_size / max(size(U)), 'bicubic');
-    end
-    seg = bwlabel(U <= params.threshold);
 end
