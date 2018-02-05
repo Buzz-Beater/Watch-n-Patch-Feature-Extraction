@@ -6,7 +6,7 @@ The skeleton/ subdirectory mainly contains skeleton alignment and visualization 
 
 The feature/ subdirectory mainly contains the superpixel feature extraction based on:
 
-- Foreground mask detection: [OSTD](https://github.com/andrewssobral/ostd), 
+- Foreground mask detection: [Online Tensor Decomposition (OSTD)](https://github.com/andrewssobral/ostd)
 
 - Edge detection and superpixel segmentation: [Structured Forests for Fast Edge Detection](Structured Forests for Fast Edge Detection)
 
