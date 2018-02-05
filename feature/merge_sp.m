@@ -6,18 +6,18 @@ function [feature] = merge_sp(segfea, seg, selected, kernel)
 	end
 	grid_space = 8;
 	wseg = get_kdes_weight_seg(seg, grid_space, patch_size);
-	wseg2 = sum(wseg(selected));
-	nfeature = size(segfea, 2);
+	wseg2 = sum(wseg(selected + 1));
+	nfeature = size(segfea, 1);
 	feature = zeros(1, nfeature);
 	if length(selected) == 0
 		return;
 	elseif length(selected) == 1
-		feature = segfea(selected, :);
+		feature = segfea(:, selected + 1)';
 	else
 		for t = 1 : length(selected)
-			feature = feature + wseg(selected)'* segfea(:, selected)';
+			feature = feature + wseg(selected + 1)'* segfea(:, selected + 1)';
 		end
-		feature = feature / wseg2;
+		feature = feature ./ wseg2;
 	end
 end
 

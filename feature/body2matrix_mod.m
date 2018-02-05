@@ -12,10 +12,12 @@ function [body_mat] = body2matrix_mod(body, field)
         track_flag = 0;
         body_tmp = zeros(joint_cnt, dimension);
         has_morethan1 = false;
+        has_skeleton = false;
         for person_idx = 1 : size(body, 2)
             cur_skeleton = body{frame_idx, person_idx};
             if cur_skeleton.isBodyTracked ~= 0
                 track_flag = 1;
+                has_skeleton = 1;
                 if has_morethan1
                     fprintf('    has more than 1 person in %d frame\n', frame_idx);
                 end
@@ -26,6 +28,9 @@ function [body_mat] = body2matrix_mod(body, field)
                 end
             end
         end
+        if ~has_skeleton
+            fprintf('   frame %d has no skeleton\n', frame_idx);
+        end
         body_mat(frame_idx, :, :) = body_tmp;
-    end
+    ends
 end

@@ -19,6 +19,7 @@ function [] = extractForegroundMask(file_path, save_path, type)
         else
             depth_file = load(filename_rgb);
             depth_img = depth_file.depth;
+            depth_img = mat2gray(depth_img);
             frame = im2double(depth_img);
         end
         
