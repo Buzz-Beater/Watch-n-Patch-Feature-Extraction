@@ -16,7 +16,7 @@ end
 disp('Extracting Kernel Descriptors ...');
 % extract dense kernel descriptors for each image
 %parpool(4);
-for i = 1:length(data_params.datapath)
+parfor i = 1:length(data_params.datapath)
 
     % compute kernel descriptors
     tic;

@@ -43,11 +43,9 @@ function [] = traverse_dir(root, fea_type, img_type)
                 fprintf('In %s/%s:\n', class_names{dir_class}, dir_name);
 				extractSkeletonFeature(file_path, save_path);
 			elseif strcmp(fea_type, 'foreground')
-                %extractForegroundMask(fullfile(file_path, 'rgbjpg'), save_path, 'rgbjpg');
-                extractForegroundMask(fullfile(file_path, 'depth'), save_path, 'depth');
+                extractForegroundMask(fullfile(file_path, img_type), save_path, img_type);
 			elseif strcmp(fea_type, 'superpixel')
-				extractSuperpixel(fullfile(file_path, 'rgbjpg'), save_path, img_type);
-                %extractSuperpixel(fullfile(file_path, 'depth'), save_path, 'depth');
+				extractSuperpixel(fullfile(file_path, img_type), save_path, img_type);
             elseif strcmp(fea_type, 'select_sp')
             	% Here code is specific designed for rgb
             	% For depth images, use 'depth' in body2matrix_mod and 'depth' in sp_path
@@ -60,7 +58,6 @@ function [] = traverse_dir(root, fea_type, img_type)
             	body = body.body;
                 for idx = 1 : length(img_path)
                    tic;
-                   %{
                    img_types = {'rgbjpg', 'depth'};
                    skeleton_fea_file = load(fullfile(root, 'features', 'skeleton', rel_path, 'skeleton_features.mat'));
                    skeleton_fea = skeleton_fea_file.features;
@@ -72,11 +69,9 @@ function [] = traverse_dir(root, fea_type, img_type)
                         if strcmp(img_type, 'rgbjpg')
                             field = 'color';
                             kernels = {'nrgbkdes', 'gradkdes', 'lbpkdes'};
-                            %kernels = {'nrgbkdes'};
                         else
                             field = 'depth';
-                            %kernels = {'gradkdes_dep', 'normalkdes'};
-                            kernels = {'gradkdes_dep'};
+                            kernels = {'gradkdes_dep', 'normalkdes'};
                         end
                         skeleton = body2matrix_mod(body, field);
                         for k_idx = 1 : length(kernels)
@@ -112,23 +107,6 @@ function [] = traverse_dir(root, fea_type, img_type)
                             concat_feature = [concat_feature, feature];
                         end
                     end
-                    %}
-                    merged_file = load(fullfile(root, 'features', 'merge', rel_path, [num2str(idx, '%04d') '.mat']));
-                    selected = merged_file.selected;
-                    ori_fea = merged_file.features;
-                    sp_path = fullfile(root, 'features', 'superpixel', img_type, rel_path, [num2str(idx, '%04d') '.mat']);
-                    sp_file = load(sp_path);
-                    if strcmp(img_type, 'rgbjpg')
-                        seg = sp_file.seg;
-                    else
-                        ucm = sp_file.U;
-                        seg = bwlabel(ucm <= 0.13);
-                    end
-                    kdes_file = load(fullfile(root, 'features', 'kdes', 'normalkdes', rel_path, [num2str(idx, '%04d') '.mat']));
-                    kdes = kdes_file.kdes;
-                    feature = merge_sp(kdes, seg, selected, 'normalkdes');
-                    concat_feature = [ori_fea, feature];
-                    fprintf('   size : %d\n', size(concat_feature, 2));
                     save_concat_features([save_rt '/' num2str(idx, '%04d') '.mat'], concat_feature, selected);
                     toc;
                 end

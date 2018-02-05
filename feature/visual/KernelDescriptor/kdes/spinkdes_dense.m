@@ -1,4 +1,4 @@
-function feaSet = spinkdes_dense(pcloud, normal, spinkdes_params, grid_space, patch_size, radius)
+function feaSet = spinkdes_dense(pcloud,normal, spinkdes_params, grid_space, patch_size, radius)
 
 %% dense color kernel descriptors over uniform grids sampled from images
 
@@ -15,7 +15,7 @@ if nargin < 4
    patch_size = 40;
 end
 if nargin < 5
-   radius = 0.25;
+   radius = 0.05;
 end
 
 maxsample = 256;

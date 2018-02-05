@@ -27,11 +27,8 @@ function [] = gen_kdes_subsample(kdes_type)
             savedir = fullfile(params.rt_dir, 'kdes', kdes_type, params.im_class{double(idx > 1) + 1});
 
             % initialize the parameters of kdes
-            kdes_params.grid = params.grid;   % kdes is extracted every 8 pixel
+            kdes_params.grid = params.grid;   % kdes is extracted every 8 pixels
             kdes_params.patchsize = params.patchsize;  % patch size
-            if contains(kdes_type, 'normal') || contains(kdes_type, 'spin')
-                kdes_params.patchsize = 40;
-            end
             load([kdes_type '_params']);
             eval(['kdes_params.kdes = ' kdes_type '_params;']);
 

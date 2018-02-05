@@ -1,5 +1,5 @@
 %   
-%   Function:   getBody
+%   Function:   extractSkeletonFeature
 %   Author:     Baoxiong Jia
 %   Usage:      pass in the directory name then return the skeleton
 %   features
@@ -34,7 +34,11 @@ function [angle_features] = calc_angle(body_mat)
    			points = body_mat(frame, connected_parts(set_idx, :), :);
    			x_1 = squeeze(points(1, 2, :) - points(1, 1, :));
    			x_2 = squeeze(points(1, 2, :) - points(1, 3, :));
-   			angle_features(frame, set_idx) = dot(x_1, x_2) / (norm(x_1) * norm(x_2));
+        if norm(x_1) == 0 || norm(x_2) == 0
+          angle_features(frame, set_idx) = 0
+        else
+   			  angle_features(frame, set_idx) = dot(x_1, x_2) / (norm(x_1) * norm(x_2));
+        end
    		end
    	end
 end

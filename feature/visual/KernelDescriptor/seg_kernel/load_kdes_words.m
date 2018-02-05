@@ -13,7 +13,9 @@ eval(['kdes_words.params=' kdesname '_params;']);
 
 kdes_words.grid_space=2;
 
-load(['visual_words/' kdesname '_' scene_type '_' num2str(word_type) '.mat']);
+% modify this line to the correct visual words you are using, to change word_type, see config.m in this directory
+
+load(['visual_words/' num2str(word_type) '/' kdesname '_' scene_type '_' num2str(word_type) '.mat']);
   words=rgbdwords;
   K = eval_kernel(words',words',kdes_words.ktype,kdes_words.kparam);
   K = K + 1e-6*eye(size(K));
