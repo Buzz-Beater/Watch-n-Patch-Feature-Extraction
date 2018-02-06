@@ -20,78 +20,15 @@ function [final_selection] = select_sp(seg, foreground, skeleton)
             selected = [selected, (seg_idx -1)];
         end
     end
-    %{
-    figure();
-    subplot(1, 2, 1);
-    imshow(foreground);
-    hold on;
-     joint_idx = [
-                    3, 2, ... % head
-                    20, 1, 0, ... % torso
-                    19, 18, 17, 16, ... % right leg
-                    15, 14, 13, 12, ... % left leg
-                    8, 9, ... % right arm
-                    4, 5, ... % left arm
-                    6, 7, 10, 11, 21, 23, 22, 24
-                ] + 1;
-    for idx = 1 : length(joint_idx)
-        row_ = round(skeleton(joint_idx(idx), 2));
-        col_ = round(skeleton(joint_idx(idx), 1));
-        plot(col_, row_, 'r*', 'MarkerSize', 5);
-    end
-    subplot(1, 2, 2);
-    imshow(double(seg) ./ double(nseg));
-    hold on;
-    joint_idx = [
-                    3, 2, ... % head
-                    20, 1, 0, ... % torso
-                    19, 18, 17, 16, ... % right leg
-                    15, 14, 13, 12, ... % left leg
-                    8, 9, ... % right arm
-                    4, 5, ... % left arm
-                    6, 7, 10, 11, 21, 23, 22, 24
-                ] + 1;
-    for idx = 1 : length(joint_idx)
-        row_ = round(skeleton(joint_idx(idx), 2));
-        col_ = round(skeleton(joint_idx(idx), 1));
-        plot(col_, row_, 'r*', 'MarkerSize', 5);
-    end
-    %}
+    
     final_selection = [];
     for idx = 1 : length(selected)
         if check_interactive(seg, selected(idx), skeleton)
             final_selection = [final_selection, selected(idx)];
         end
     end
-    %visualize(seg, final_selection, skeleton);
-    close all;
 end
 
-function [] = visualize(seg, selected, skeleton)
-    joint_idx = [
-                    3, 2, ... % head
-                    20, 1, 0, ... % torso
-                    19, 18, 17, 16, ... % right leg
-                    15, 14, 13, 12, ... % left leg
-                    8, 9, ... % right arm
-                    4, 5, ... % left arm
-                    6, 7, 10, 11, 21, 23, 22, 24
-                ] + 1;
-    img = zeros(size(seg));
-    for sp = 1 : length(selected)
-        index = find(seg == selected(sp));
-        img(index) = 1;
-    end
-    
-    figure();
-    imshow(img);
-    hold on;
-    for idx = 1 : length(joint_idx)
-        row_ = round(skeleton(joint_idx(idx), 2));
-        col_ = round(skeleton(joint_idx(idx), 1));
-        plot(col_, row_, 'r*', 'MarkerSize', 15);
-    end
-end
 
 function [active] = check_interactive(seg, seg_idx, skeleton)
     threshold = 30;

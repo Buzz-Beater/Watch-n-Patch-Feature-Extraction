@@ -28,9 +28,10 @@ function [body_mat] = body2matrix_mod(body, field)
                 end
             end
         end
-        if ~has_skeleton
-            fprintf('   frame %d has no skeleton\n', frame_idx);
-        end
+
+        %if ~has_skeleton
+        %    fprintf('   frame %d has no skeleton\n', frame_idx);
+        %end
         body_mat(frame_idx, :, :) = body_tmp;
-    ends
+    end
 end
