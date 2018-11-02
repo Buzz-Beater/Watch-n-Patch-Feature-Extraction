@@ -5,7 +5,7 @@
 %            action_index ---- merged action labels, for convenience of showing the actual string
 %    return: action2anchor ---- for each action, if there are labeled action skeletons, return the anchor point (3 * anchor_cnt)
 %            action2skeleton ---- for each action, access action2skeleton{action_idx}, we can have all skeleton labeled as action_index(action_idx)
-function [action2anchor, action2skeleton] = getnchorSkeleton(skeletons, action_index)
+function [action2anchor, action2skeleton] = getAnchorSkeleton(skeletons, action_index)
 	total_action = size(action_index, 2) + 1;
 	action2skeleton = {};
 	for action = 1 : total_action
